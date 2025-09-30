@@ -19,9 +19,26 @@ This allows us to control the instantiation of the classes based on some conditi
 Or if we need to replace one of these classes with new versions.
 
 ## Installation
+- Install the project:
+<pre>git clone https://github.com/feras1984/Expenses.git</pre>
+<pre>cd Expenses</pre>
+
+- Install the dependencies
+<pre>composer install</pre>
+
+- copy .env.example into .env (Don't forget to add email host, username, and PW based as required to send the ExpenseEvent).
+<pre>cp .env.example .env</pre>
+<pre>php artisan key:generate</pre>
+
+- In this example, we have used light weight DB like sqlite, We have installed two DBs
+sqlite and sqlite_test. The first one for the project, the second one for the PHPUnit testing.
+
+<pre>php artisan migrate --database=sqlite</pre>
+<pre>php artisan migrate --database=sqlite_test</pre>
 
 
 
 ## Time Spent
 
 - Actual time for the project 12 Hours.
+
