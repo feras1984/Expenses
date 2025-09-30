@@ -68,6 +68,12 @@ static::creating(function ($query) {
 });
 </pre>
 
+- For Filtering functions, We have advanced filter using Pipeline class,
+So we can add the required filter from the request query.
+Until now, we have LimitFilter, OffsetFilter, FromDateFilter, ToDateFilter, CategoryFilter.
+We can use the filter of the list like:
+<pre>http://localhost:8000/expenses/api?limit=1&from=2020-09-23&to=2025-10-21&categories[]=Transportation</pre>
+
 ## Time Spent
 
 - Actual time for the project 12 Hours.
