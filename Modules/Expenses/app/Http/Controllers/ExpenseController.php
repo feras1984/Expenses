@@ -12,13 +12,33 @@ use Symfony\Component\HttpFoundation\Response;
 class ExpenseController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the expenses.
+     *
+     * @group Expenses
+     *
+     * @response 200 {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "title": "Lunch",
+     *       "amount": 20,
+     *       "category": "Food",
+     *       "expense_date": "2025-09-30",
+     *       "notes": "Team lunch"
+     *     }
+     *   ]
+     * }
+     *
+     * @response 500 {
+     *      "status": "error",
+     *       "error": "Error Message"
+     *  }
      */
     public function index(): JsonResponse
     {
 //        return view('expenses::index');
         try {
-            return response()->json(ExpenseService::getExpenses());
+            return response()->json(ExpenseService::getExpenses(), Response::HTTP_OK);
         } catch (\Exception $exception) {
             return response()->json([
                 'status' => 'error',
@@ -37,13 +57,44 @@ class ExpenseController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created expense in storage.
+     *
+     * @group Expenses
+     *
+     * @bodyParam title string required min:3 max:100 The title of the expense. Example: "Lunch"
+     * @bodyParam amount numeric required min:1 The expense amount. Example: 20
+     * @bodyParam category string required min:3 max:100 The expense category. Example: "Food"
+     * @bodyParam expense_date date required The date of the expense. Example: "2025-09-30"
+     * @bodyParam notes string optional Notes about the expense. Example: "Team lunch"
+     *
+     * @response 201 {
+     *    "id": 1,
+     *    "title": "Lunch",
+     *    "amount": 20,
+     *    "category": "Food",
+     *    "expense_date": "2025-09-30",
+     *    "notes": "Team lunch"
+     *  }
+     *
+     * @response 422 {
+     *     "status": "error",
+     *      "errors": "The validation errors list"
+     * }
+     *
+     * @response 500 {
+     *      "status": "error",
+     *       "error": "Error Message"
+     *  }
      */
+
     public function store(ExpenseRequest $request): JsonResponse
     {
         try {
             $data = $request->all();
-            return response()->json(ExpenseService::createExpense($data));
+            return response()->json(
+                ExpenseService::createExpense($data),
+                Response::HTTP_CREATED,
+            );
         } catch (\Exception $exception) {
             return response()->json([
                 'status' => 'error',
@@ -54,11 +105,32 @@ class ExpenseController extends Controller
 
     /**
      * Show the specified resource.
+     *
+     * @group Expenses
+     *
+     * @response 200 {
+     *   "data": {
+     *        "id": 1,
+     *        "title": "Lunch",
+     *        "amount": 20,
+     *        "category": "Food",
+     *        "expense_date": "2025-09-30",
+     *        "notes": "Team lunch"
+     *      }
+     * }
+     *
+     * @response 500 {
+     *      "status": "error",
+     *       "error": "Error Message"
+     *  }
      */
     public function show(int | string $id): JsonResponse
     {
         try {
-            return response()->json(ExpenseService::getExpenseById($id));
+            return response()->json(
+                ExpenseService::getExpenseById($id),
+                Response::HTTP_OK,
+            );
         } catch (\Exception $exception) {
             return response()->json([
                 'status' => 'error',
@@ -77,11 +149,40 @@ class ExpenseController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * @group Expenses
+     *
+     * @bodyParam title string required min:3 max:100 The title of the expense. Example: "Lunch"
+     * @bodyParam amount numeric required min:1 The expense amount. Example: 20
+     * @bodyParam category string required min:3 max:100 The expense category. Example: "Food"
+     * @bodyParam expense_date date required The date of the expense. Example: "2025-09-30"
+     * @bodyParam notes string optional Notes about the expense. Example: "Team lunch"
+     *
+     * @response 200 {
+     *     "id": 1,
+     *     "title": "Lunch",
+     *     "amount": 20,
+     *     "category": "Food",
+     *     "expense_date": "2025-09-30",
+     *     "notes": "Team lunch"
+     *   }
+     *
+     * @response 422 {
+     *      "status": "error",
+     *       "errors": "The validation errors list"
+     *  }
+     *
+     * @response 500 {
+     *      "status": "error",
+     *       "error": "Error Message"
+     *  }
      */
     public function update(ExpenseRequest $request, int | string $id): JsonResponse
     {
         try {
-            return response()->json(ExpenseService::updateExpense($id, $request->all()));
+            return response()->json(
+                ExpenseService::updateExpense($id, $request->all()),
+                Response::HTTP_OK,
+            );
         } catch (\Exception $exception) {
             return response()->json([
                 'status' => 'error',
@@ -91,12 +192,26 @@ class ExpenseController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the expense from storage.
+     * @group Expenses
+     * @urlParam id int required The ID of the expense to delete. Example: 1
+     *
+     * @response 200 {
+     *    "status": true/false,
+     *  }
+     *
+     * @response 500 {
+     *     "status": "error",
+     *      "error": "Error Message"
+     * }
      */
     public function destroy(int | string $id): JsonResponse
     {
         try {
-            return response()->json(['status' => ExpenseService::deleteExpense($id)]);
+            return response()->json(
+                ['status' => ExpenseService::deleteExpense($id)],
+                Response::HTTP_OK,
+            );
         } catch (\Exception $exception) {
             return response()->json([
                 'status' => 'error',
