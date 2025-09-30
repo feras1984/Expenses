@@ -96,7 +96,7 @@ class ExpenseController extends Controller
     public function destroy(int | string $id): JsonResponse
     {
         try {
-            return response()->json(ExpenseService::deleteExpense($id));
+            return response()->json(['status' => ExpenseService::deleteExpense($id)]);
         } catch (\Exception $exception) {
             return response()->json([
                 'status' => 'error',
