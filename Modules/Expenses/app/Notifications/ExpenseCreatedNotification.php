@@ -33,7 +33,7 @@ class ExpenseCreatedNotification extends Notification
         return (new MailMessage)
             ->subject('New Expense Created')
             ->line('A new Expense has been created')
-            ->action('Notification Action', 'http://localhost.com')
+//            ->action('Notification Action', 'http://localhost.com')
             ->line('Thank you for using our application!');
     }
 

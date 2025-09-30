@@ -3,6 +3,7 @@
 namespace Modules\Expenses\Services;
 
 use Illuminate\Database\Eloquent\Collection;
+use Modules\Expenses\Events\ExpenseCreatedEvent;
 use Modules\Expenses\Facades\Repositories\ExpenseRepository;
 use Modules\Expenses\Models\Expense;
 
@@ -10,7 +11,9 @@ class ExpenseService
 {
     public function createExpense(array $data): Expense
     {
-        return ExpenseRepository::create($data);
+        $expense = ExpenseRepository::create($data);
+        event(new ExpenseCreatedEvent($expense));
+        return $expense;
     }
 
     public function getExpenses(): Collection

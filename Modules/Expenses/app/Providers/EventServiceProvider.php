@@ -14,7 +14,9 @@ class EventServiceProvider extends ServiceProvider
      * @var array<string, array<int, string>>
      */
     protected $listen = [
-        ExpenseCreatedEvent::class => ExpenseCreatedListener::class,
+        ExpenseCreatedEvent::class => [
+            ExpenseCreatedListener::class,
+        ],
     ];
 
     /**
