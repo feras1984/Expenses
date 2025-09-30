@@ -22,7 +22,7 @@ class ExpensesTest extends TestCase
             'expenses/api',
             $data);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
     }
 
     function test_can_validate_expense() {

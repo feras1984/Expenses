@@ -108,6 +108,8 @@ class ExpenseController extends Controller
      *
      * @group Expenses
      *
+     * @urlParam id int required The ID of the expense to delete. Example: 1
+     *
      * @response 200 {
      *   "data": {
      *        "id": 1,
@@ -150,6 +152,8 @@ class ExpenseController extends Controller
     /**
      * Update the specified resource in storage.
      * @group Expenses
+     *
+     * @urlParam id int required The ID of the expense to delete. Example: 1
      *
      * @bodyParam title string required min:3 max:100 The title of the expense. Example: "Lunch"
      * @bodyParam amount numeric required min:1 The expense amount. Example: 20

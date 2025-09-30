@@ -36,7 +36,37 @@ sqlite and sqlite_test. The first one for the project, the second one for the PH
 <pre>php artisan migrate --database=sqlite</pre>
 <pre>php artisan migrate --database=sqlite_test</pre>
 
+- Run th server:
+<pre>php artisan serve</pre>
 
+- You can follow the documentation to see the endpoints and the expected response:
+[Docs](http://localhost:8000/docs)
+
+### Some notes:
+- We have added ExpenseAddedEvent, ExpenseAddedListener and ExpenseAddedNotification to the project, So that
+when we add a new expense, we can send an email, or send it to DB as required, 
+the current implementation is for email (We need to add the email account to .env file).
+
+
+- For testing: We have four testing tasks, for: Adding, Updating, Validation, and Deletion Tests
+<pre>php artisan test Modules/Expenses/Tests</pre>
+
+If you have a look at the test, you can see that we can navigate inside JSON response 
+to assert the results more accurately.
+
+- For validation functionality, we have added ExpenseValidation with the required validations,
+and we customize the messages based on each state, and finally, If we have a violation, we 
+throw an exception with a response of 422.
+
+-For The ID of the expense, we have stopped the increment of the ID, put the keytype of string
+And generate the UUID:
+<pre>
+static::creating(function ($query) {
+    if(empty($query->{$query->getKeyName()})){
+        $query->{$query->getKeyName()} = (string) Str::uuid();
+    }
+});
+</pre>
 
 ## Time Spent
 
